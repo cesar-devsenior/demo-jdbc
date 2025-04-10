@@ -27,18 +27,18 @@ public class Main {
 
         var employeeDao = new EmployeeDao();
         // prueba de Insert
-        // employeeDao.saveEmployee(employee);
+        // employeeDao.save(employee);
 
         // prueba de Update
         // employee.setLastName("Diaz Arriaga");
         // employee.setPhoneNumber("3101234567");
-        // employeeDao.updateEmployee(1, employee);
+        // employeeDao.update(1, employee);
 
         // prueba de Delete
-        // employeeDao.deleteEmployee(1);
+        // employeeDao.delete(1);
 
         // prueba de Select
-        employeeDao.findAllEmployees().forEach(System.out::println);
+        employeeDao.findAll().forEach(System.out::println);
 
     }
 

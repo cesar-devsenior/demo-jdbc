@@ -1,21 +1,21 @@
 package com.devsenior.cdiaz.dao;
 
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.devsenior.cdiaz.vo.Employee;
 
-// DAO - Data Access Object
-public class EmployeeDao {
+// DRY - Don't Repeat Yourself
 
-    public void saveEmployee(Employee employee) {
-        var url = "jdbc:postgresql://localhost:5432/RH";
-        var user = "postgres";
-        var pass = "admin123";
+// DAO - Data Access Object
+public class EmployeeDao extends AbstractDao<Employee, Integer> {
+
+    @Override
+    public void save(Employee employee) {
+        
         try {
-            var conn = DriverManager.getConnection(url, user, pass);
+            var conn = getConnection();
             var stmt = conn.createStatement();
 
             var format = """
@@ -37,11 +37,9 @@ public class EmployeeDao {
         }
     }
 
-    public void updateEmployee(Integer id, Employee employee) {
-        var url = "jdbc:postgresql://localhost:5432/RH";
-        var user = "postgres";
-        var pass = "admin123";
-        try (var conn = DriverManager.getConnection(url, user, pass);
+    @Override
+    public void update(Integer id, Employee employee) {
+        try (var conn = getConnection();
                 var stmt = conn.createStatement()) {
 
             var format = """
@@ -69,11 +67,9 @@ public class EmployeeDao {
         }
     }
 
-    public void deleteEmployee(Integer id) {
-        var url = "jdbc:postgresql://localhost:5432/RH";
-        var user = "postgres";
-        var pass = "admin123";
-        try (var conn = DriverManager.getConnection(url, user, pass);
+    @Override
+    public void delete(Integer id) {
+        try (var conn = getConnection();
                 var stmt = conn.prepareStatement("DELETE FROM EMPLOYEES WHERE EMPLOYEE_ID = ?")) {
 
             stmt.setInt(1, id);
@@ -85,13 +81,10 @@ public class EmployeeDao {
         }
     }
 
-    public List<Employee> findAllEmployees() {
+    @Override
+    public List<Employee> findAll() {
         var employees = new ArrayList<Employee>();
-        var url = "jdbc:postgresql://localhost:5432/RH";
-        var user = "postgres";
-        var pass = "admin123";
-
-        try (var conn = DriverManager.getConnection(url, user, pass);
+        try (var conn = getConnection();
                 var stmt = conn.prepareStatement("SELECT * from EMPLOYEES");
                 var rset = stmt.executeQuery()) {
 
@@ -117,7 +110,8 @@ public class EmployeeDao {
         return employees;
     }
 
-    public Employee findEmployeeById(Integer id) {
+    @Override
+    public Employee findById(Integer id) {
         return null;
     }
 }
